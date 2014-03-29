@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
+  #这里漏了权限验证了
 
   # GET /accounts
   # GET /accounts.json

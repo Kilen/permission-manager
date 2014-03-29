@@ -54,6 +54,7 @@ class TasksController < ApplicationController
 
   # DELETE /tasks/1
   # DELETE /tasks/1.json
+  # 这里跟roles_controller的建议一样，要考虑删除失败的可能
   def destroy
     @task.destroy
     respond_to do |format|
