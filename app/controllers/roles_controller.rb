@@ -25,6 +25,9 @@ class RolesController < ApplicationController
 
   # POST /roles
   # POST /roles.json
+  # 一般情况下，我们只会用到一种返回格式，所以建议把自动生成的respond_to 去掉，
+  # 我建议是如果发现一段代码不用，立刻删掉，因为我们用git来管理代码，所以不用担心代码删了
+  # 就不好找回来
   def create
     @role = Role.new(role_params)
 
@@ -63,6 +66,30 @@ class RolesController < ApplicationController
     end
   end
 
+#一般写数据库的操作都会有出错的可能，现在的逻辑是如果出错了，用户不会注意到，也许可以写成这样:
+#def assign_permissions
+#  ...
+#  if save_permissions
+#    ...
+#  else
+#    ...
+#  end
+#end
+#
+#private
+#def save_permissions(news, olds)
+#  ActiveRecord::Base.transaction do
+#    news.each do |new|
+#      RolePermission.create!(...)
+#    end
+#    olds.each do |old|
+#      RolePermission.create!(...)
+#    end
+#  end
+#  true
+#rescue
+#  false
+#end
   def assign_permissions
     role_id = params[:role_id]
     news = params[:news].split(',')
@@ -73,6 +100,7 @@ class RolesController < ApplicationController
     deleteds.each do |d|
       RolePermission.destroy_all ['role_id = ? and permission_id = ?', role_id, d]
     end
+    #一般返回json也许会比较好，而且返回的json格式应该在整个项目都统一，并且有个规范
     render text: '操作成功'
   end
 

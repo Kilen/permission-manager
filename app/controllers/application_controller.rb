@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  #建议改为 current_account 不会那么容易混淆
   def current_user
     session[:account]
   end
